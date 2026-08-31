@@ -66,8 +66,8 @@ mlm_enable_warnings(${PROJECT_NAME}_stats)
 add_library(${PROJECT_NAME}_cli STATIC
     cli/command_handler.h
     cli/command_handler.cpp
-    cli/command_parser.cpp
     cli/command_tokenizer.h
+    cli/command_tokenizer.cpp
 )
 target_include_directories(${PROJECT_NAME}_cli
     PUBLIC
