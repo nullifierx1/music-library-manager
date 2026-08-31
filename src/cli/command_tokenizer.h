@@ -9,16 +9,15 @@ public:
     virtual ~ITokenizer() = default;
 
     virtual std::vector<std::string> tokenize(
-        const std::string& command
-    ) const;
+        std::string_view command,
+        std::string_view separators = " \t"
+    ) const = 0;
 };
 
 class BoostTokenizer : public ITokenizer {
 public:
     std::vector<std::string> tokenize(
-        const std::string& command
-    ) const;
-
-private:
-    // TO DO
+        std::string_view command,
+        std::string_view separators = " \t"
+    ) const override;
 };
