@@ -5,22 +5,28 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include <optional>
+
+namespace mlm {
 
 class Track {
 public:
 	struct TrackMeta {
-		using year_t = std::uint16_t;
-
-		std::string title;
-		std::string artist;
-		std::string genre;
-		std::string album;
-		year_t year = 0;
-		std::chrono::seconds duration;
+		std::optional<std::string> artist;
+		std::optional<std::string> genre;
+		std::optional<std::string> album;
+		std::optional<int> year = 0;
 	};
 
+	const std::string& name() const {
+		return name_;
+	}
+
 private:
+	std::string name_;
+	std::chrono::seconds duration_;
 	boost::filesystem::path path_;
-	std::size_t id_;
 	TrackMeta track_meta_;
 };
+
+} // namespace mlm

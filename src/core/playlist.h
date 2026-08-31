@@ -4,14 +4,22 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 namespace mlm {
 
 class Playlist {
 public:
-	// TO DO
+	std::vector<std::weak_ptr<Track>>& data() {
+		return data_;
+	}
+
+	const std::string& name() const {
+		return name_; 
+	}
 	
 private:
+	std::string name_;
 	std::vector<std::weak_ptr<Track>> data_;
 };
 
