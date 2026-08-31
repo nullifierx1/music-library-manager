@@ -1,12 +1,3 @@
-# Local agent instructions
-AGENTS.md
-
-# Application data
-*.json
-*.m3u
-*.mp3
-*.bin
-
 ## C++
 
 # Prerequisites
@@ -381,6 +372,15 @@ ScaffoldingReadMe.txt
 
 # StyleCop
 StyleCopReport.xml
+
+# Local agent instructions
+AGENTS.md
+
+# Application data
+*.json
+*.m3u
+*.mp3
+*.bin
 
 # Files built by Visual Studio
 *_i.c
