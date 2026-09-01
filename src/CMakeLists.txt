@@ -4,7 +4,6 @@ add_library(${PROJECT_NAME}_core STATIC
     core/library.h
     core/playlist.h
     core/playlist.cpp
-    core/reference_manager.h
 )
 target_include_directories(${PROJECT_NAME}_core
     PUBLIC
