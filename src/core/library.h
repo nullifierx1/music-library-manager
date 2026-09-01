@@ -24,6 +24,7 @@ public:
     }    
 
 private:
+    /* Iverted index model */
     data_t data_;
     name_collector_t name_to_idx_;
 };
