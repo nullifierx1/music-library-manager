@@ -18,9 +18,8 @@ public:
 		std::optional<int> year = 0;
 	};
 
-	Track(std::string_view name /* other args */) {
-		
-	}
+	Track(std::string name /* other args */) 
+		: name_(std::move(name)) {}
 
 	const std::string& name() const {
 		return name_;

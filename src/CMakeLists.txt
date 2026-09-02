@@ -1,21 +1,41 @@
+# Core domain model. Public headers expose boost::filesystem::path.
 add_library(${PROJECT_NAME}_core STATIC
     core/track.h
     core/track.cpp
     core/library.h
     core/playlist.h
     core/playlist.cpp
-    core/reference_manager.h
+    core/media_bundle.h
 )
 target_include_directories(${PROJECT_NAME}_core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/core
 )
 target_link_libraries(${PROJECT_NAME}_core
     PUBLIC
-        boost_headers
+        Boost::filesystem
 )
 mlm_enable_warnings(${PROJECT_NAME}_core)
 
+# Application services operating on the core domain model.
+add_library(${PROJECT_NAME}_service STATIC
+    service/library_manager.h
+    service/library_manager.cpp
+    service/playlist_manager.h
+    service/playlist_manager.cpp
+)
+target_include_directories(${PROJECT_NAME}_service
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(${PROJECT_NAME}_service
+    PUBLIC
+        ${PROJECT_NAME}_core
+)
+mlm_enable_warnings(${PROJECT_NAME}_service)
+
+# Search subsystem. Depends on the track and library model from core.
 add_library(${PROJECT_NAME}_search STATIC
     search/search_engine.h
     search/search_engine.cpp
@@ -32,6 +52,7 @@ target_link_libraries(${PROJECT_NAME}_search
 )
 mlm_enable_warnings(${PROJECT_NAME}_search)
 
+# Storage exporters. Depend on core and Boost.PropertyTree for JSON support.
 add_library(${PROJECT_NAME}_storage STATIC
     storage/json_exporter.h
     storage/json_exporter.cpp
@@ -49,6 +70,7 @@ target_link_libraries(${PROJECT_NAME}_storage
 )
 mlm_enable_warnings(${PROJECT_NAME}_storage)
 
+# Statistics subsystem. Depends on the core library data.
 add_library(${PROJECT_NAME}_stats STATIC
     stats/stats_collector.h
     stats/stats_collector.cpp
@@ -63,6 +85,7 @@ target_link_libraries(${PROJECT_NAME}_stats
 )
 mlm_enable_warnings(${PROJECT_NAME}_stats)
 
+# Command-line layer. Combines application services and feature subsystems.
 add_library(${PROJECT_NAME}_cli STATIC
     cli/command_handler.h
     cli/command_handler.cpp
@@ -75,7 +98,7 @@ target_include_directories(${PROJECT_NAME}_cli
 )
 target_link_libraries(${PROJECT_NAME}_cli
     PUBLIC
-        ${PROJECT_NAME}_core
+        ${PROJECT_NAME}_service
         ${PROJECT_NAME}_search
         ${PROJECT_NAME}_storage
         ${PROJECT_NAME}_stats
@@ -83,11 +106,13 @@ target_link_libraries(${PROJECT_NAME}_cli
 )
 mlm_enable_warnings(${PROJECT_NAME}_cli)
 
-
+# Public umbrella target for executables and tests.
+# It exposes all project modules and their transitive dependencies.
 add_library(${PROJECT_NAME}_lib INTERFACE)
 target_link_libraries(${PROJECT_NAME}_lib
     INTERFACE
         ${PROJECT_NAME}_core
+        ${PROJECT_NAME}_service
         ${PROJECT_NAME}_search
         ${PROJECT_NAME}_storage
         ${PROJECT_NAME}_stats
