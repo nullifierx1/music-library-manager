@@ -3,6 +3,7 @@
 #include <core/library.h>
 
 #include <string>
+#include <optional>
 #include <cstddef>
 
 namespace mlm {
@@ -16,10 +17,10 @@ public:
     void addTrack(const std::string& name /* other args */);
 
     /* Update track by name */
-    void updateTrack(const std::string& name);
+    bool updateTrack(const std::string& name /* args */);
 
     /* Delete track by name */
-    void deleteTrack(const std::string& name);
+    bool deleteTrack(const std::string& name);
 
     /* Get track reference by name */
     std::shared_ptr<mlm::Track> getTrack(const std::string& name);
@@ -28,6 +29,8 @@ public:
     std::size_t trackCount() const;
     
 private:
+    std::optional<std::size_t> getTrackIndex(const std::string& name) const;
+
     mlm::Library& lib_reference_;
 };
 
