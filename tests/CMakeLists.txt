@@ -1,5 +1,3 @@
-# GoogleTest фетчится в cmake/dependencies.cmake.
-
 add_executable(tests
     track_ut.cpp
     library_ut.cpp
